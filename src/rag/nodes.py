@@ -48,10 +48,14 @@ def grade_documents(state: RAGState) -> dict:
 
     filtered_docs: list[Document] = []
 
-    for doc in state["documents"]:
+    for doc in state.get("documents", []):
+        # Skip documents with empty content
+        if not doc.page_content or not doc.page_content.strip():
+            continue
+
         # Format the grader prompt
         formatted_prompt = GRADER_HUMAN_PROMPT.format(
-            query=state["query"],
+            query=state.get("query", ""),
             document_content=doc.page_content
         )
 

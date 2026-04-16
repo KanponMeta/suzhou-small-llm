@@ -28,6 +28,12 @@ def verify_api_key(credentials: HTTPAuthorizationCredentials = Depends(security)
     Raises:
         HTTPException: 401 if token is invalid or missing.
     """
+    # Explicitly validate Bearer scheme (defense in depth - HTTPBearer already checks this,
+    # but explicit validation makes the intent clear and handles edge cases)
+    if credentials.scheme != "Bearer":
+        raise HTTPException(status_code=401, detail="Invalid authentication scheme. Use 'Bearer'.")
+    if not credentials.credentials:
+        raise HTTPException(status_code=401, detail="Invalid API key")
     if credentials.credentials != settings.API_KEY:
         raise HTTPException(status_code=401, detail="Invalid API key")
     return credentials.credentials
