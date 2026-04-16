@@ -44,11 +44,11 @@ Plans:
   2. 查询流程经由 LangGraph 编排：检索相关文档块 → 相关性评估 → 调用 Qwen LLM 生成回答
   3. 当知识库中存在相关文档时，回答内容准确引用文档内容，不产生幻觉
   4. 当知识库中无相关文档时，接口返回礼貌的中文兜底回复，而非捏造答案
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 02-01: LangGraph RAG 流程设计与实现（检索→评估→生成节点）
-- [ ] 02-02: OpenAI 兼容端点封装与接口规范合规验证
+- [ ] 02-01-PLAN.md — LangGraph RAG graph: state schema, retrieve/grade/generate nodes, compiled StateGraph
+- [ ] 02-02-PLAN.md — FastAPI /v1/chat/completions endpoint with Pydantic schemas matching 接口规范.md
 
 ### Phase 3: 评测数据集生成
 **Goal**: 用户可触发从知识库文档自动生成评测 Q&A 对，并下载符合数据集提交规范的 ZIP 压缩包
@@ -59,7 +59,7 @@ Plans:
   2. 每条生成的 Q&A 对包含所有必填字段：`id`、`task_type`、`category`、`user_prompt`、`answer_type`、`correct_answer`，类型为 `chat:text` / `free_form`
   3. 生成的答案来源于对应文档块内容，可追溯到源文档，无幻觉内容
   4. 导出的 ZIP 文件包含 `evaluation_data.json` 与空 `attachments/` 目录，结构符合 `数据集提交指南.md` 规范
-**Plans**: 2 plans
+**Plans**: TBD
 
 Plans:
 - [ ] 03-01: Q&A 对生成逻辑（基于文档块调用 LLM，保证接地性）
