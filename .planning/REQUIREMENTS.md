@@ -67,28 +67,28 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INFRA-01 | — | Pending |
-| INFRA-02 | — | Pending |
-| INFRA-03 | — | Pending |
-| INGEST-01 | — | Pending |
-| INGEST-02 | — | Pending |
-| INGEST-03 | — | Pending |
-| INGEST-04 | — | Pending |
-| INGEST-05 | — | Pending |
-| QUERY-01 | — | Pending |
-| QUERY-02 | — | Pending |
-| QUERY-03 | — | Pending |
-| QUERY-04 | — | Pending |
-| DATASET-01 | — | Pending |
-| DATASET-02 | — | Pending |
-| DATASET-03 | — | Pending |
-| DATASET-04 | — | Pending |
+| INFRA-01 | Phase 1 | Pending |
+| INFRA-02 | Phase 1 | Pending |
+| INFRA-03 | Phase 1 | Pending |
+| INGEST-01 | Phase 1 | Pending |
+| INGEST-02 | Phase 1 | Pending |
+| INGEST-03 | Phase 1 | Pending |
+| INGEST-04 | Phase 1 | Pending |
+| INGEST-05 | Phase 1 | Pending |
+| QUERY-01 | Phase 2 | Pending |
+| QUERY-02 | Phase 2 | Pending |
+| QUERY-03 | Phase 2 | Pending |
+| QUERY-04 | Phase 2 | Pending |
+| DATASET-01 | Phase 3 | Pending |
+| DATASET-02 | Phase 3 | Pending |
+| DATASET-03 | Phase 3 | Pending |
+| DATASET-04 | Phase 3 | Pending |
 
 **Coverage:**
 - v1 requirements: 16 total
-- Mapped to phases: 0 (roadmap not yet created)
-- Unmapped: 16 ⚠️
+- Mapped to phases: 16
+- Unmapped: 0 (full coverage)
 
 ---
 *Requirements defined: 2026-04-16*
-*Last updated: 2026-04-16 after initial definition*
+*Last updated: 2026-04-16 after roadmap creation*
