@@ -10,10 +10,12 @@ from app.config import get_settings
 from app.models.document import (
     DocumentMetadata,
     UploadResponse,
+    DocumentListItem,
+    DocumentListResponse,
 )
 from app.services.document_parser import parse_document, get_file_type
 from app.services.text_splitter import split_text
-from app.services.vector_store import add_documents
+from app.services.vector_store import add_documents, get_all_document_metadata
 
 router = APIRouter(prefix="/documents", tags=["documents"])
 
@@ -91,4 +93,38 @@ async def upload_document(file: UploadFile = File(...)):
         raise HTTPException(
             status_code=500,
             detail=f"Failed to process document: {str(e)}",
+        )
+
+
+@router.get("", response_model=DocumentListResponse)
+async def list_documents():
+    """List all indexed documents with their metadata.
+
+    Returns a list of all documents that have been uploaded and indexed,
+    including doc_id, filename, file_type, and chunk_count for each.
+    """
+    try:
+        docs_meta = get_all_document_metadata()
+
+        documents = [
+            DocumentListItem(
+                doc_id=meta["doc_id"],
+                filename=meta["filename"],
+                file_type=meta["file_type"],
+                file_size=0,
+                chunk_count=meta["chunk_count"],
+                created_at="",
+            )
+            for meta in docs_meta
+        ]
+
+        return DocumentListResponse(
+            total=len(documents),
+            documents=documents,
+        )
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to retrieve document list: {str(e)}",
         )
