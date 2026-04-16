@@ -2,6 +2,8 @@
 from fastapi import FastAPI
 from src.api.chat import router as chat_router
 from src.api.routes.dataset import router as dataset_router
+from app.api.documents import router as documents_router
+from app.api.health import router as health_router
 
 app = FastAPI(
     title="Enterprise Knowledge Base RAG System",
@@ -9,8 +11,12 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# Include the chat completions router
+app.include_router(health_router)
+app.include_router(documents_router)
 app.include_router(chat_router)
-
-# Include the dataset generation router
 app.include_router(dataset_router)
+
+
+@app.get("/")
+async def root():
+    return {"message": "Enterprise Knowledge Base RAG System", "version": "1.0.0"}

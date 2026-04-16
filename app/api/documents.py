@@ -6,7 +6,7 @@ from pathlib import Path
 
 from fastapi import APIRouter, UploadFile, File, HTTPException
 
-from app.config import get_settings
+from src.config import get_settings
 from app.models.document import (
     DocumentMetadata,
     UploadResponse,
@@ -15,7 +15,7 @@ from app.models.document import (
 )
 from app.services.document_parser import parse_document, get_file_type
 from app.services.text_splitter import split_text
-from app.services.vector_store import add_documents, get_all_document_metadata
+from src.vectorstore import add_documents, get_all_document_metadata
 
 router = APIRouter(prefix="/documents", tags=["documents"])
 
@@ -45,7 +45,7 @@ async def upload_document(file: UploadFile = File(...)):
     doc_id = str(uuid.uuid4())
 
     # Save uploaded file to disk
-    upload_dir = Path(settings.upload_dir)
+    upload_dir = Path(settings.UPLOAD_DIR)
     upload_dir.mkdir(parents=True, exist_ok=True)
     file_path = upload_dir / f"{doc_id}_{file.filename}"
 
