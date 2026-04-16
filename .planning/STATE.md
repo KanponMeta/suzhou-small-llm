@@ -5,7 +5,7 @@ milestone_name: milestone
 status: executing
 stopped_at: Completed 03-02 dataset export and endpoint
 last_updated: "2026-04-16T04:46:09.653Z"
-last_activity: 2026-04-16 - Completed quick task 260416-pmt: 整合 app 和 src 为单一 FastAPI 服务
+last_activity: 2026-04-16 - Completed quick task 260416-slh: 删掉 app/ 目录，合并进 src/，src.main:app 完全独立
 progress:
   total_phases: 3
   completed_phases: 3
@@ -76,6 +76,7 @@ None yet.
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 260416-pmt | 整合 app 和 src 为单一 FastAPI 服务 | 2026-04-16 | d7f9400 | [260416-pmt-app-src-fastapi](.planning/quick/260416-pmt-app-src-fastapi/) |
+| 260416-slh | 删掉 app/ 目录，合并进 src/，src.main:app 完全独立 | 2026-04-16 | 91e8cf2 | [260416-slh-app-app-api-documents-py-app-api-health-](.planning/quick/260416-slh-app-app-api-documents-py-app-api-health-/) |
 
 ### Blockers/Concerns
 
