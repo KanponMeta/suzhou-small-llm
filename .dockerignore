@@ -1,0 +1,10 @@
+.git
+.planning
+.specstory
+.claude
+__pycache__
+*.pyc
+.env
+.gitignore
+*.md
+!requirements.txt
