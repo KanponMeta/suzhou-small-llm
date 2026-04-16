@@ -59,7 +59,7 @@ Plans:
   2. 每条生成的 Q&A 对包含所有必填字段：`id`、`task_type`、`category`、`user_prompt`、`answer_type`、`correct_answer`，类型为 `chat:text` / `free_form`
   3. 生成的答案来源于对应文档块内容，可追溯到源文档，无幻觉内容
   4. 导出的 ZIP 文件包含 `evaluation_data.json` 与空 `attachments/` 目录，结构符合 `数据集提交指南.md` 规范
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
 - [ ] 03-01: Q&A 对生成逻辑（基于文档块调用 LLM，保证接地性）
