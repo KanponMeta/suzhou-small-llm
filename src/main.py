@@ -1,4 +1,7 @@
 """FastAPI application for Enterprise Knowledge Base RAG System."""
+from dotenv import load_dotenv
+load_dotenv()  # Load .env into os.environ before any library reads it
+
 from fastapi import FastAPI
 from src.api.chat import router as chat_router
 from src.api.routes.dataset import router as dataset_router

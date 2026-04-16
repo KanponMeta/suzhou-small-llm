@@ -14,6 +14,8 @@ from src.rag.prompts import (
 from src.vectorstore import get_vectorstore
 from src.config import settings
 
+_DASHSCOPE_CN_BASE = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+
 
 def retrieve(state: RAGState) -> dict:
     """Retrieve documents from vector store based on query.
@@ -44,7 +46,7 @@ def grade_documents(state: RAGState) -> dict:
     Returns:
         Dict with 'filtered_documents' and 'has_relevant_docs' keys.
     """
-    llm = ChatQwen(model="qwen-plus", temperature=0)
+    llm = ChatQwen(model="qwen-plus", temperature=0, api_key=settings.DASHSCOPE_API_KEY, api_base=_DASHSCOPE_CN_BASE)
 
     filtered_docs: list[Document] = []
 
@@ -102,7 +104,7 @@ def generate(state: RAGState) -> dict:
     formatted_human = GENERATOR_HUMAN_PROMPT.format(query=state["query"])
 
     # Initialize LLM for generation
-    llm = ChatQwen(model="qwen-plus", temperature=0.3)
+    llm = ChatQwen(model="qwen-plus", temperature=0.3, api_key=settings.DASHSCOPE_API_KEY, api_base=_DASHSCOPE_CN_BASE)
 
     # Generate answer
     messages = [
