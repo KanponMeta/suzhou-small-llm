@@ -22,7 +22,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Goal**: 系统可通过单条命令启动，DashScope 连通性已验证，用户可上传文档并查询已摄入的文件列表
 **Depends on**: Nothing (first phase)
 **Requirements**: INFRA-01, INFRA-02, INFRA-03, INGEST-01, INGEST-02, INGEST-03, INGEST-04, INGEST-05
-**Plans:** 3 plans
+**Plans:** 2/3 plans executed
 **Success Criteria** (what must be TRUE):
   1. `docker compose up` 成功启动所有服务，无需任何手动配置步骤
   2. `GET /health` 返回 HTTP 200，表示所有服务（包括 ChromaDB 和 DashScope 连通）均就绪
@@ -31,8 +31,8 @@ Decimal phases appear between their surrounding integers in numeric order.
   5. `GET /documents` 返回所有已摄入文档的列表（含 ID、文件名等元数据）
 
 Plans:
-- [ ] 01-01-PLAN.md — Docker Compose 骨架 (app + chromadb)、Dockerfile、requirements.txt、环境变量配置、FastAPI 应用骨架
-- [ ] 01-02-PLAN.md — 文档解析 (PDF/MD/TXT)、中文分块、DashScope Embedding 生成、ChromaDB 存储、POST /documents/upload 端点
+- [x] 01-01-PLAN.md — Docker Compose 骨架 (app + chromadb)、Dockerfile、requirements.txt、环境变量配置、FastAPI 应用骨架
+- [x] 01-02-PLAN.md — 文档解析 (PDF/MD/TXT)、中文分块、DashScope Embedding 生成、ChromaDB 存储、POST /documents/upload 端点
 - [ ] 01-03-PLAN.md — GET /health 端点 (含 ChromaDB + DashScope 连通检查)、GET /documents 文档列表端点
 
 ### Phase 2: RAG 查询 API
@@ -47,8 +47,8 @@ Plans:
   4. 当知识库中无相关文档时，接口返回礼貌的中文兜底回复，而非捏造答案
 
 Plans:
-- [ ] 02-01-PLAN.md — LangGraph RAG graph: state schema, retrieve/grade/generate nodes, compiled StateGraph
-- [ ] 02-02-PLAN.md — FastAPI /v1/chat/completions endpoint with Pydantic schemas matching 接口规范.md
+- [x] 02-01-PLAN.md — LangGraph RAG graph: state schema, retrieve/grade/generate nodes, compiled StateGraph
+- [x] 02-02-PLAN.md — FastAPI /v1/chat/completions endpoint with Pydantic schemas matching 接口规范.md
 
 ### Phase 3: 评测数据集生成
 **Goal**: 用户可触发从知识库文档自动生成评测 Q&A 对，并下载符合数据集提交规范的 ZIP 压缩包
@@ -72,6 +72,6 @@ Phases execute in numeric order: 1 → 2 → 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. 基础设施与文档摄入 | 0/3 | Planned | - |
-| 2. RAG 查询 API | 0/2 | Not started | - |
+| 1. 基础设施与文档摄入 | 2/3 | In Progress|  |
+| 2. RAG 查询 API | 2/2 | Complete | 2026-04-16 |
 | 3. 评测数据集生成 | 0/2 | Not started | - |

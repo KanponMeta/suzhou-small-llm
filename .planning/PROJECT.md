@@ -53,11 +53,12 @@
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| LangGraph 作为编排框架 | 用户明确指定，支持有状态的 RAG 流程图编排 | — Pending |
-| 阿里云百炼 DashScope | 国内合规，中文模型质量高，统一 LLM 服务商 | — Pending |
-| 向量数据库使用 ChromaDB | 轻量、无额外服务依赖、Docker 内嵌运行，适合 MVP | — Pending |
-| 评测数据集自动生成 | 用 LLM 读取文档块，自动产生 Q&A 对，减少人工标注成本 | — Pending |
-| MVP 无前端界面 | 降低复杂度，核心价值在于 API 和数据集生成能力 | — Pending |
+| LangGraph 作为编排框架 | 用户明确指定，支持有状态的 RAG 流程图编排 | ✓ Validated in Phase 2: StateGraph with retrieve→grade→generate flow |
+| 阿里云百炼 DashScope | 国内合规，中文模型质量高，统一 LLM 服务商 | ✓ Validated in Phase 2: ChatQwen (qwen-plus) for grading and generation |
+| 向量数据库使用 ChromaDB | 轻量、无额外服务依赖、Docker 内嵌运行，适合 MVP | ✓ Validated in Phase 1/2: ChromaDB with langchain-chroma integration |
+| 评测数据集自动生成 | 用 LLM 读取文档块，自动产生 Q&A 对，减少人工标注成本 | — Pending (Phase 3) |
+| MVP 无前端界面 | 降低复杂度，核心价值在于 API 和数据集生成能力 | ✓ Validated: API-only approach |
+| OpenAI 兼容接口 | 接口规范明确要求 OpenAI 兼容格式 | ✓ Validated in Phase 2: POST /v1/chat/completions with exact schema match |
 
 ## Evolution
 
