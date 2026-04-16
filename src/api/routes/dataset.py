@@ -64,7 +64,7 @@ async def generate_dataset():
         if not evaluation_data.test_cases:
             logger.warning("No Q&A pairs generated")
             raise HTTPException(
-                status_code=404,
+                status_code=500,
                 detail="No Q&A pairs could be generated from indexed documents"
             )
 

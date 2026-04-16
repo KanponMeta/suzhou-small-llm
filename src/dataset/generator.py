@@ -56,6 +56,9 @@ class QAGenerationPrompt:
 仅输出 JSON 数组，不要添加其他说明文字。"""
 
 
+_DASHSCOPE_CN_BASE = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+
+
 def get_llm() -> ChatQwen:
     """Get ChatQwen LLM instance configured for qwen-long model.
 
@@ -64,7 +67,8 @@ def get_llm() -> ChatQwen:
     """
     return ChatQwen(
         model="qwen-long",
-        dashscope_api_key=settings.DASHSCOPE_API_KEY,
+        api_key=settings.DASHSCOPE_API_KEY,
+        api_base=_DASHSCOPE_CN_BASE,
     )
 
 

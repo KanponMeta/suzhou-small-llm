@@ -28,9 +28,9 @@
 
 ### Evaluation Dataset (DATASET)
 
-- [ ] **DATASET-01**: System exposes a `POST /dataset/generate` endpoint that triggers auto-generation of Q&A pairs from all indexed documents
+- [x] **DATASET-01**: System exposes a `POST /dataset/generate` endpoint that triggers auto-generation of Q&A pairs from all indexed documents
 - [ ] **DATASET-02**: Generated Q&A pairs are `chat:text` / `free_form` type with all required fields: `id`, `task_type`, `category`, `user_prompt`, `answer_type`, `correct_answer`
-- [ ] **DATASET-03**: Generated dataset is exported as a `.zip` file containing `evaluation_data.json` and an empty `attachments/` folder, matching `数据集提交指南.md` format
+- [x] **DATASET-03**: Generated dataset is exported as a `.zip` file containing `evaluation_data.json` and an empty `attachments/` folder, matching `数据集提交指南.md` format
 - [ ] **DATASET-04**: Each generated Q&A pair is grounded in the source document chunk (no hallucinated answers)
 
 ## v2 Requirements
@@ -79,9 +79,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | QUERY-02 | Phase 2 | Pending |
 | QUERY-03 | Phase 2 | Pending |
 | QUERY-04 | Phase 2 | Pending |
-| DATASET-01 | Phase 3 | Pending |
+| DATASET-01 | Phase 3 | Complete |
 | DATASET-02 | Phase 3 | Pending |
-| DATASET-03 | Phase 3 | Pending |
+| DATASET-03 | Phase 3 | Complete |
 | DATASET-04 | Phase 3 | Pending |
 
 **Coverage:**
