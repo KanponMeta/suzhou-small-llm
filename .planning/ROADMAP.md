@@ -12,7 +12,7 @@
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: 基础设施与文档摄入** - Docker 一键启动、DashScope 连通验证、文档解析/分块/向量化/持久化存储全链路
+- [x] **Phase 1: 基础设施与文档摄入** - Docker 一键启动、DashScope 连通验证、文档解析/分块/向量化/持久化存储全链路 (completed 2026-04-16)
 - [ ] **Phase 2: RAG 查询 API** - LangGraph 编排 RAG 流程，暴露符合接口规范的 OpenAI 兼容查询接口
 - [ ] **Phase 3: 评测数据集生成** - 从知识库文档自动生成 chat:text Q&A 对，导出符合提交规范的 ZIP 压缩包
 
@@ -22,7 +22,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Goal**: 系统可通过单条命令启动，DashScope 连通性已验证，用户可上传文档并查询已摄入的文件列表
 **Depends on**: Nothing (first phase)
 **Requirements**: INFRA-01, INFRA-02, INFRA-03, INGEST-01, INGEST-02, INGEST-03, INGEST-04, INGEST-05
-**Plans:** 2/3 plans executed
+**Plans:** 3/3 plans complete
 **Success Criteria** (what must be TRUE):
   1. `docker compose up` 成功启动所有服务，无需任何手动配置步骤
   2. `GET /health` 返回 HTTP 200，表示所有服务（包括 ChromaDB 和 DashScope 连通）均就绪
@@ -33,7 +33,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 Plans:
 - [x] 01-01-PLAN.md — Docker Compose 骨架 (app + chromadb)、Dockerfile、requirements.txt、环境变量配置、FastAPI 应用骨架
 - [x] 01-02-PLAN.md — 文档解析 (PDF/MD/TXT)、中文分块、DashScope Embedding 生成、ChromaDB 存储、POST /documents/upload 端点
-- [ ] 01-03-PLAN.md — GET /health 端点 (含 ChromaDB + DashScope 连通检查)、GET /documents 文档列表端点
+- [x] 01-03-PLAN.md — GET /health 端点 (含 ChromaDB + DashScope 连通检查)、GET /documents 文档列表端点
 
 ### Phase 2: RAG 查询 API
 **Goal**: 用户可通过符合 `接口规范.md` 的 OpenAI 兼容接口向知识库提问，并获得基于检索内容的中文回答
@@ -72,6 +72,6 @@ Phases execute in numeric order: 1 → 2 → 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. 基础设施与文档摄入 | 2/3 | In Progress|  |
+| 1. 基础设施与文档摄入 | 3/3 | Complete    | 2026-04-16 |
 | 2. RAG 查询 API | 2/2 | Complete | 2026-04-16 |
 | 3. 评测数据集生成 | 0/2 | Not started | - |
