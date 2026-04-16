@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 03-01-QA-pair-generation
-last_updated: "2026-04-16T04:35:00Z"
-last_activity: 2026-04-16
+stopped_at: Completed 03-02 dataset export and endpoint
+last_updated: "2026-04-16T04:46:09.653Z"
+last_activity: 2026-04-16 - Completed quick task 260416-pmt: 整合 app 和 src 为单一 FastAPI 服务
 progress:
   total_phases: 3
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 7
-  completed_plans: 6
-  percent: 86
+  completed_plans: 7
+  percent: 100
 ---
 
 # Project State
@@ -26,8 +26,8 @@ See: .planning/PROJECT.md (updated 2026-04-16)
 ## Current Position
 
 Phase: 03 of 3 (dataset-generation)
-Plan: 01 of 02
-Status: Completed
+Plan: 2 of 02
+Status: Ready to execute
 Last activity: 2026-04-16
 
 Progress: [████████████████████░░] 86%
@@ -52,6 +52,7 @@ Progress: [████████████████████░░] 8
 - Trend: —
 
 *Updated after each plan completion*
+| Phase 03 P02 | 4 | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -64,10 +65,17 @@ Recent decisions affecting current work:
 - ChromaDB IS_PERSISTENT=TRUE 须在 Phase 1 基础设施阶段解决（容器重启数据不丢失）
 - DashScope embedding batch 上限 10 条，Phase 1 摄入流水线须分批处理
 - Phase 2 需在实现前完成 LangGraph state 设计
+- [Phase 03]: Used model_dump() to exclude source_document and source_chunk_id from ZIP export
 
 ### Pending Todos
 
 None yet.
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260416-pmt | 整合 app 和 src 为单一 FastAPI 服务 | 2026-04-16 | d7f9400 | [260416-pmt-app-src-fastapi](.planning/quick/260416-pmt-app-src-fastapi/) |
 
 ### Blockers/Concerns
 
@@ -76,6 +84,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-16
-Stopped at: Roadmap created and files written. Ready to begin Phase 1 planning.
+Last session: 2026-04-16T04:46:09.651Z
+Stopped at: Completed 03-02 dataset export and endpoint
 Resume file: None
