@@ -21,6 +21,9 @@ logger = logging.getLogger(__name__)
 # Grounding instruction constant
 GROUNDING_INSTRUCTION = "仅基于以下文档内容生成问答对，不要使用任何外部知识。"
 
+# Minimum chunk length to generate Q&A from
+MIN_CHUNK_LENGTH = 50
+
 
 class QAGenerationPrompt:
     """Prompt template for Q&A generation from document chunks."""
@@ -183,18 +186,22 @@ def generate_qa_from_chunks(
     return test_cases
 
 
-def generate_qa_pairs(vectorstore) -> EvaluationData:
+def generate_qa_pairs(vectorstore, max_pairs: int = 300) -> EvaluationData:
     """Generate Q&A pairs from all documents in the vector store.
 
     This function retrieves all document chunks from the ChromaDB vector store,
-    groups them by source document, and generates Q&A pairs for each document.
+    groups them by source document, and generates Q&A pairs evenly distributed
+    across all documents.
 
     Args:
         vectorstore: ChromaDB vector store instance (langchain_chroma.Chroma)
+        max_pairs: Maximum number of Q&A pairs to generate (default: 300)
 
     Returns:
         EvaluationData containing all generated test cases
     """
+    import random
+
     # Retrieve all documents from the collection
     try:
         result = vectorstore._collection.get()
@@ -210,9 +217,8 @@ def generate_qa_pairs(vectorstore) -> EvaluationData:
         logger.warning("No documents found in vector store")
         return EvaluationData(test_cases=[])
 
-    # Group chunks by source document
-    chunks_by_source: dict[str, List[str]] = defaultdict(list)
-    chunk_sources: dict[int, str] = {}  # index -> source
+    # Group chunks by source document with metadata
+    chunks_by_source: dict[str, List[tuple]] = defaultdict(list)  # source -> [(chunk_text, chunk_idx), ...]
 
     for i, doc in enumerate(documents):
         if i < len(metadatas) and metadatas[i]:
@@ -220,15 +226,32 @@ def generate_qa_pairs(vectorstore) -> EvaluationData:
         else:
             source = f"document_{i}"
 
-        chunks_by_source[source].append(doc)
-        chunk_sources[i] = source
+        chunks_by_source[source].append((doc, i))
 
-    logger.info(f"Found {len(chunks_by_source)} source documents")
+    logger.info(f"Found {len(chunks_by_source)} source documents with {len(documents)} total chunks")
 
-    # Generate Q&A for each source document
-    all_test_cases: List[TestCase] = []
+    # Get all sources and calculate pairs per source (equal distribution)
+    sources = list(chunks_by_source.keys())
+    num_sources = len(sources)
 
-    for source_name, chunks in chunks_by_source.items():
+    if num_sources == 0:
+        return EvaluationData(test_cases=[])
+
+    # Calculate pairs per source, distribute remaining to first few sources
+    base_pairs = max_pairs // num_sources
+    remainder = max_pairs % num_sources
+
+    # Build a round-robin list of (chunk, source) to process
+    # Each source gets base_pairs + (1 if index < remainder else 0) chunks
+    chunks_to_process: List[tuple] = []  # [(chunk_text, source_name, category, chunk_idx), ...]
+
+    for idx, source_name in enumerate(sources):
+        # Number of Q&A pairs for this source
+        num_for_source = base_pairs + (1 if idx < remainder else 0)
+
+        if num_for_source == 0:
+            continue
+
         # Derive category from source filename
         category = source_name
         if category.endswith('.pdf'):
@@ -238,10 +261,68 @@ def generate_qa_pairs(vectorstore) -> EvaluationData:
         elif category.endswith('.md'):
             category = category[:-3]
 
-        # Generate Q&A pairs
-        test_cases = generate_qa_from_chunks(chunks, source_name, category)
-        all_test_cases.extend(test_cases)
+        # Get chunks for this source
+        source_chunks = chunks_by_source[source_name]
 
-        logger.info(f"Generated {len(test_cases)} Q&A pairs from {source_name}")
+        # Skip chunks that are too short
+        valid_chunks = [(chunk, idx) for chunk, idx in source_chunks if len(chunk.strip()) >= MIN_CHUNK_LENGTH]
+
+        if not valid_chunks:
+            logger.warning(f"No valid chunks for source: {source_name}")
+            continue
+
+        # Sample evenly across chunks if we need fewer than available
+        if len(valid_chunks) >= num_for_source:
+            # Evenly sample from chunks
+            step = len(valid_chunks) / num_for_source
+            sampled = [valid_chunks[int(i * step)] for i in range(num_for_source)]
+        else:
+            # Use all chunks, repeat if needed (shouldn't happen often)
+            sampled = valid_chunks[:num_for_source]
+
+        for chunk_text, chunk_idx in sampled:
+            chunks_to_process.append((chunk_text, source_name, category, chunk_idx))
+
+    logger.info(f"Processing {len(chunks_to_process)} chunks across {num_sources} documents")
+
+    # Generate Q&A pairs
+    all_test_cases: List[TestCase] = []
+    llm = get_llm()
+
+    for chunk_text, source_name, category, chunk_idx in chunks_to_process:
+        try:
+            # Build prompt with grounding instruction
+            prompt = QAGenerationPrompt.build(chunk_text, num_pairs=1)  # 1 pair per chunk
+
+            # Call LLM
+            response = llm.invoke([HumanMessage(content=prompt)])
+
+            # Parse response
+            qa_pairs = parse_llm_response(response.content)
+
+            # Create TestCase objects
+            for qa in qa_pairs:
+                if "user_prompt" not in qa or "correct_answer" not in qa:
+                    logger.warning(f"Skipping invalid Q&A pair: {qa}")
+                    continue
+
+                tc = TestCase(
+                    id=f"qa_{uuid.uuid4().hex[:8]}",
+                    task_type="chat:text",
+                    category=category,
+                    user_prompt=qa["user_prompt"],
+                    answer_type="free_form",
+                    options=None,
+                    correct_answer=qa["correct_answer"],
+                    source_document=source_name,
+                    source_chunk_id=f"chunk_{chunk_idx}"
+                )
+                all_test_cases.append(tc)
+
+        except Exception as e:
+            logger.error(f"Error generating Q&A from chunk {chunk_idx}: {e}")
+            continue
+
+    logger.info(f"Generated {len(all_test_cases)} Q&A pairs across {num_sources} documents")
 
     return EvaluationData(test_cases=all_test_cases)
