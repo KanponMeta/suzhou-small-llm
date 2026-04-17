@@ -100,7 +100,7 @@ async def chat_completions(
 
     return build_chat_response(
         content=generation,
-        model=request.model,
+        model="qwen3.5-plus", # Hardcoded model identifier for now
         prompt_tokens=prompt_tokens,
         completion_tokens=completion_tokens,
     )
