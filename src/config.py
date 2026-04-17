@@ -36,6 +36,7 @@ class Settings(BaseSettings):
     # API server
     API_HOST: str = "0.0.0.0"
     API_PORT: int = 8000
+    DEBUG: bool = False
 
 
 @lru_cache
