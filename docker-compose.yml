@@ -3,8 +3,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: suzhou-small-llm
     ports:
-      - "8000:8000"
+      - "9100:8000"
     depends_on:
       chromadb:
         condition: service_healthy
@@ -16,6 +17,9 @@ services:
     volumes:
       - ./uploads:/app/uploads
     restart: unless-stopped
+    networks:
+      - default
+      - pma-network
 
   chromadb:
     image: chromadb/chroma:1.5.7
@@ -35,3 +39,7 @@ services:
 
 volumes:
   chroma_data:
+
+networks:
+  pma-network:
+    external: true
